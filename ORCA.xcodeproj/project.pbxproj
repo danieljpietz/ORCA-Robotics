@@ -7,16 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E43D7B4E2463AF9F001569B7 /* ORCA.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B4D2463AF9F001569B7 /* ORCA.hpp */; };
+		E43D7B4E2463AF9F001569B7 /* ORCA in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B4D2463AF9F001569B7 /* ORCA */; };
 		E43D7B502463AF9F001569B7 /* ORCAPriv.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B4F2463AF9F001569B7 /* ORCAPriv.hpp */; };
 		E43D7B522463AF9F001569B7 /* ORCA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B512463AF9F001569B7 /* ORCA.cpp */; };
+		E43D7B5E2463B654001569B7 /* ORCAMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B5B2463B654001569B7 /* ORCAMath.cpp */; };
+		E43D7B5F2463B654001569B7 /* ORCAMath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B5C2463B654001569B7 /* ORCAMath.hpp */; };
+		E43D7B602463B654001569B7 /* ORCASolvers.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B5D2463B654001569B7 /* ORCASolvers.hpp */; };
+		E43D7B7C2463BE7A001569B7 /* Link.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B7A2463BE7A001569B7 /* Link.cpp */; };
+		E43D7B7D2463BE7A001569B7 /* Link.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B7B2463BE7A001569B7 /* Link.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E43D7B4A2463AF9F001569B7 /* libORCA.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libORCA.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		E43D7B4D2463AF9F001569B7 /* ORCA.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ORCA.hpp; sourceTree = "<group>"; };
+		E43D7B4D2463AF9F001569B7 /* ORCA */ = {isa = PBXFileReference; lastKnownFileType = text; path = ORCA; sourceTree = "<group>"; };
 		E43D7B4F2463AF9F001569B7 /* ORCAPriv.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ORCAPriv.hpp; sourceTree = "<group>"; };
 		E43D7B512463AF9F001569B7 /* ORCA.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ORCA.cpp; sourceTree = "<group>"; };
+		E43D7B5B2463B654001569B7 /* ORCAMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ORCAMath.cpp; sourceTree = "<group>"; };
+		E43D7B5C2463B654001569B7 /* ORCAMath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ORCAMath.hpp; sourceTree = "<group>"; };
+		E43D7B5D2463B654001569B7 /* ORCASolvers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ORCASolvers.hpp; sourceTree = "<group>"; };
+		E43D7B7A2463BE7A001569B7 /* Link.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Link.cpp; sourceTree = "<group>"; };
+		E43D7B7B2463BE7A001569B7 /* Link.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Link.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,11 +59,40 @@
 		E43D7B4C2463AF9F001569B7 /* ORCA */ = {
 			isa = PBXGroup;
 			children = (
-				E43D7B4D2463AF9F001569B7 /* ORCA.hpp */,
+				E43D7B5A2463B593001569B7 /* ORCAMath */,
+				E43D7B592463B3A4001569B7 /* Robot */,
+				E43D7B582463B39B001569B7 /* Link */,
+				E43D7B4D2463AF9F001569B7 /* ORCA */,
 				E43D7B4F2463AF9F001569B7 /* ORCAPriv.hpp */,
 				E43D7B512463AF9F001569B7 /* ORCA.cpp */,
 			);
 			path = ORCA;
+			sourceTree = "<group>";
+		};
+		E43D7B582463B39B001569B7 /* Link */ = {
+			isa = PBXGroup;
+			children = (
+				E43D7B7A2463BE7A001569B7 /* Link.cpp */,
+				E43D7B7B2463BE7A001569B7 /* Link.hpp */,
+			);
+			path = Link;
+			sourceTree = "<group>";
+		};
+		E43D7B592463B3A4001569B7 /* Robot */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Robot;
+			sourceTree = "<group>";
+		};
+		E43D7B5A2463B593001569B7 /* ORCAMath */ = {
+			isa = PBXGroup;
+			children = (
+				E43D7B5B2463B654001569B7 /* ORCAMath.cpp */,
+				E43D7B5C2463B654001569B7 /* ORCAMath.hpp */,
+				E43D7B5D2463B654001569B7 /* ORCASolvers.hpp */,
+			);
+			path = ORCAMath;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -63,8 +102,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E43D7B602463B654001569B7 /* ORCASolvers.hpp in Headers */,
 				E43D7B502463AF9F001569B7 /* ORCAPriv.hpp in Headers */,
-				E43D7B4E2463AF9F001569B7 /* ORCA.hpp in Headers */,
+				E43D7B4E2463AF9F001569B7 /* ORCA in Headers */,
+				E43D7B5F2463B654001569B7 /* ORCAMath.hpp in Headers */,
+				E43D7B7D2463BE7A001569B7 /* Link.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +167,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E43D7B7C2463BE7A001569B7 /* Link.cpp in Sources */,
+				E43D7B5E2463B654001569B7 /* ORCAMath.cpp in Sources */,
 				E43D7B522463AF9F001569B7 /* ORCA.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -182,11 +226,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-larmadillo";
 				SDKROOT = macosx;
+				SYSTEM_HEADER_SEARCH_PATHS = /usr/local/include;
 			};
 			name = Debug;
 		};
@@ -238,6 +285,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				SYSTEM_HEADER_SEARCH_PATHS = /usr/local/include;
 			};
 			name = Release;
 		};
