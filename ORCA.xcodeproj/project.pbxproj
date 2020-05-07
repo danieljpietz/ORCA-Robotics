@@ -15,6 +15,10 @@
 		E43D7B602463B654001569B7 /* ORCASolvers.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B5D2463B654001569B7 /* ORCASolvers.hpp */; };
 		E43D7B7C2463BE7A001569B7 /* Link.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B7A2463BE7A001569B7 /* Link.cpp */; };
 		E43D7B7D2463BE7A001569B7 /* Link.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B7B2463BE7A001569B7 /* Link.hpp */; };
+		E43D7B8C24649CEC001569B7 /* RLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B8A24649CEC001569B7 /* RLink.cpp */; };
+		E43D7B912464ACF5001569B7 /* Robot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B8F2464ACF5001569B7 /* Robot.cpp */; };
+		E43D7B922464ACF5001569B7 /* Robot.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B902464ACF5001569B7 /* Robot.hpp */; };
+		E43D7B942464B246001569B7 /* RootLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B932464B246001569B7 /* RootLink.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +31,10 @@
 		E43D7B5D2463B654001569B7 /* ORCASolvers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ORCASolvers.hpp; sourceTree = "<group>"; };
 		E43D7B7A2463BE7A001569B7 /* Link.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Link.cpp; sourceTree = "<group>"; };
 		E43D7B7B2463BE7A001569B7 /* Link.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Link.hpp; sourceTree = "<group>"; };
+		E43D7B8A24649CEC001569B7 /* RLink.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RLink.cpp; sourceTree = "<group>"; };
+		E43D7B8F2464ACF5001569B7 /* Robot.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Robot.cpp; sourceTree = "<group>"; };
+		E43D7B902464ACF5001569B7 /* Robot.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Robot.hpp; sourceTree = "<group>"; };
+		E43D7B932464B246001569B7 /* RootLink.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RootLink.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +82,8 @@
 			children = (
 				E43D7B7A2463BE7A001569B7 /* Link.cpp */,
 				E43D7B7B2463BE7A001569B7 /* Link.hpp */,
+				E43D7B8A24649CEC001569B7 /* RLink.cpp */,
+				E43D7B932464B246001569B7 /* RootLink.cpp */,
 			);
 			path = Link;
 			sourceTree = "<group>";
@@ -81,6 +91,8 @@
 		E43D7B592463B3A4001569B7 /* Robot */ = {
 			isa = PBXGroup;
 			children = (
+				E43D7B8F2464ACF5001569B7 /* Robot.cpp */,
+				E43D7B902464ACF5001569B7 /* Robot.hpp */,
 			);
 			path = Robot;
 			sourceTree = "<group>";
@@ -103,6 +115,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E43D7B602463B654001569B7 /* ORCASolvers.hpp in Headers */,
+				E43D7B922464ACF5001569B7 /* Robot.hpp in Headers */,
 				E43D7B502463AF9F001569B7 /* ORCAPriv.hpp in Headers */,
 				E43D7B4E2463AF9F001569B7 /* ORCA in Headers */,
 				E43D7B5F2463B654001569B7 /* ORCAMath.hpp in Headers */,
@@ -167,8 +180,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E43D7B912464ACF5001569B7 /* Robot.cpp in Sources */,
 				E43D7B7C2463BE7A001569B7 /* Link.cpp in Sources */,
 				E43D7B5E2463B654001569B7 /* ORCAMath.cpp in Sources */,
+				E43D7B942464B246001569B7 /* RootLink.cpp in Sources */,
+				E43D7B8C24649CEC001569B7 /* RLink.cpp in Sources */,
 				E43D7B522463AF9F001569B7 /* ORCA.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -233,7 +249,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-larmadillo";
 				SDKROOT = macosx;
-				SYSTEM_HEADER_SEARCH_PATHS = /usr/local/include;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					"\"$(SRCROOT)/ORCA\"",
+				);
 			};
 			name = Debug;
 		};
