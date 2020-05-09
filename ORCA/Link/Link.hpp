@@ -58,8 +58,11 @@ protected:
     Col<float> __omega;                     // The angular velocty of the link in the world space
     Col<float> __dotrLocal;                 // The linear velocity of the link in the joint space
     Col<float> __dotr;                      // The linear velocity of the link in the world space
-    Col<float> __rotationMatrixLocal;       // The rotation of the of the link in the space of the previous link
-    Col<float> __rotationMatrixGlobal;      // The rotation of the of the link in the world space
+    Mat<float> __rotationMatrixLocal;       // The rotation of the of the link in the space of the previous link
+    Mat<float> __rotationMatrixGlobal;      // The rotation of the of the link in the world space
+    Mat<float> __localMassMatrix;         // The local mass matrix for the link
+    Mat<float> __systemMassMatrix;        // System Mass Matrix for the link
+    Col<float> __vecOfCorCent;            // Vector for Coriolis and Centreptial terms for the link
     
     /* Below are the protected setters for the Link class */
     
@@ -116,21 +119,39 @@ protected:
     }
     
     void setRotationMatrixGlobal(Mat<float> mat) {
-        this->__rotationMatrixLocal = mat;
+        this->__rotationMatrixGlobal = mat;
     }
     
     void setDOF(int DOF) {
         this->__DOF = DOF;
     }
     
+    void setLocalMassMatrix(Mat<float> mat) {
+        this->__localMassMatrix = mat;
+    }
+    
+    void setSystemMassMatrix(Mat<float> mat) {
+        this->__systemMassMatrix = mat;
+    }
+    
+    void setVectorOfCorCent(Col<float> vec) {
+        this->__vecOfCorCent = vec;
+    }
+    
     /* Below are protected functions for the Link class */
     
     virtual void updateDOFDimensions(int n);    // Update all matrix dimensions that depend on the DOF of the robot
-    virtual void __updateDOFDimensions(int n); // Recursive caller for updateDOFDimensions function
+    virtual void __updateDOFDimensions(int n);  // Recursive caller for updateDOFDimensions function
     virtual void attatchLink(Link* link);       // Attatch a link 
-    virtual void update();                      // Recursively udpates all states in the link based on the state of the previous link
-    virtual void updateBranch();                // Calls the update() function on the current link, updateBranch() of all next links in the chain
-    
+    virtual void __update();                    // Recursively udpates all states in the link based on the state of the previous link
+    virtual void update() {};                   // Subclass Specific update function for link
+    virtual void __updateBranch();              // Calls the update() function on the current link, updateBranch() of all next links in the chain
+    virtual void setGammaIndex(int baseIndex);  // Assigns the gamma indicies in the gammaIndex vector
+    virtual void updateGamma();                 // Retrieves the links value from the robot
+    virtual void updateLocalMassMatrix();       // Updates the local mass matrix for the link
+    virtual void updateSystemMassMatrix();      // Updates the system mass matrix for the link
+    virtual void updateVectorOfCorCent();       // Updates the vector of coriolis and centripital terms for the robot
+        
     Link();
     
 public:
@@ -174,6 +195,14 @@ public:
     
     Mat<float> getIHat() {
         return this->__IHat;
+    }
+    
+    Mat<float> getITildeBot() {
+        return this->__ITildeBot;
+    }
+    
+    Mat<float> getIHatBot() {
+        return this->__IHatBot;
     }
     
     Col<float> getGamma() {
@@ -220,6 +249,18 @@ public:
         return this->__DOF;
     }
     
+    Mat<float> getLocalMassMatrix() {
+        return this->__localMassMatrix;
+    }
+    
+    Mat<float> getSystemMassMatrix() {
+        return this->__systemMassMatrix;
+    }
+    
+    Col<float> getVectorOfCorCent() {
+        return this->__vecOfCorCent;
+    }
+    
     /* Below are the setters for the public members of the link class */
     
     void setMass(float mass) {
@@ -245,6 +286,7 @@ public:
     void setLocalOffset(Col<float> offset) {
         this->__localOffset = offset;
     }
+    
 };
 
 /**
@@ -256,9 +298,17 @@ protected:
 public:
     
     RootLink();
-    
+    virtual void __update() override {
+        this->update();
+        this->updateLocalMassMatrix();
+        this->updateSystemMassMatrix();
+        this->updateVectorOfCorCent();
+    }
     virtual void update() override;         // Called everytime the robot is updated. Must be overloaded by user
     virtual void initialize();              // Called when the root link is initialized. Must be overloaded by user
+    virtual void setJacobianAtIndex(int row, int col, float val) {
+        this->setJacobian(setValueAtIndex(this->getJacobian(), row, col, val));
+    }
 };
 
 /* Below are non-member functions for the RootLink class */
@@ -271,10 +321,13 @@ class RLink : public Link {
 protected:
     std::vector<axis> __rotationAxes;
     
+    /* Below are all member functions for revolute joints */
+    virtual void updateRotationMatrixLocal();                  // Updates the local rotation matrix based on the current gamma value
+    virtual void updateRotationMatrixGlobal();                 // Updates the global rotation matrix based on the previous link and current gamma value
 public:
     RLink(axis rotationAxis);
     RLink(std::vector<axis> rotationAxes);
-    virtual void updateRotationMatrixLocal();
+    
     
     virtual void update() override;
     

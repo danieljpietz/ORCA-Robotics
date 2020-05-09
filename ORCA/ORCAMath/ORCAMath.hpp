@@ -32,4 +32,12 @@ Col<float> quaternionProduct(Col<float> q1, Col<float> q2);
 
 }
 
+template <class T>
+Mat<T> setValueAtIndex(Mat<T> mat, int row, int col, T val) {
+    assert(row < mat.n_rows);
+    assert(col < mat.n_cols);
+    mat[col*mat.n_rows + row] = val;
+    return mat;
+}
+
 #endif /* ORCAMath_hpp */
