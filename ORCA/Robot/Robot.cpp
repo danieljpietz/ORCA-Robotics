@@ -104,4 +104,5 @@ void Robot::update() {
     this->getRootLink()->__updateBranch();
     this->updateSystemMassMatrix();
     this->updateVectorOfCorCent();
+    
 }

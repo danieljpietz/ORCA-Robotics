@@ -11,21 +11,32 @@
 
 #include "../ORCAMath/ORCAMath.hpp"
 #include "../ORCA"
+#include <functional>
+#include <cstdio>
 
 using namespace arma;
 
 namespace ORCA {
 class Link;
 class RootLink;
+template <class T>
+class ODESolver;
+class Robot;
+
+void __step(Robot* bot);
+
 
 class Robot {
+    
 protected:
     
     /* Below are constant parameters for a robot           */
     /* These should be nulled and zeroed on initalization  */
     /* and can Be set by the public and protected dsetters */
     
-    RootLink* __rootLink;                                   //Root Link for the robot
+    RootLink* __rootLink;                                   // Root Link for the robot
+    ODESolver<Col<float> >* __solver;                       // Solver for simulation the robot
+    float __stepSize;
     
     /* Below are runtime constants for a robotic link     */
     /* These should be nulled and zeroed on initalization */
@@ -41,6 +52,7 @@ protected:
     Col<float> __dotgamma;                                  // All joint velocities for the robot
     Mat<float> __SystemMassMatrix;                          // System Mass Matrix for the robot
     Col<float> __vecOfCorCent;                              // Vector for Coriolis and Centreptial terms for the robot
+    
     /* Below are the protected setters of the Robot class */
     
     void setDOF(int DOF) {
@@ -89,6 +101,10 @@ public:
         return this->__dotgamma;
     }
     
+    Col<float> getGammaState() {
+        return join_vert(this->getGamma(), this->getDotGamma());
+    }
+    
     Mat<float> getSystemMassMatrix() {
         return this->__SystemMassMatrix;
     }
@@ -97,10 +113,27 @@ public:
         return this->__vecOfCorCent;
     }
     
+    ODESolver<Col<float> >* getSolver() {
+        return this->__solver;
+    }
+    
+    float getStepSize() {
+        return this->__stepSize;
+    }
+    
     /* Below are all of the public setters for the Robot class */
     
     void setGamma(Col<float> gamma) {
         this->__gamma = gamma;
+    }
+    
+    void setGammaState(Col<float> state) {
+        assert(state.n_cols == 2*this->getDOF() || state.n_rows == 2*this->getDOF());
+        int i;
+        for (i = 0; i < this->getDOF(); i++) {
+            this->setGammaAtIndex(i, state[i]);
+            this->setDotGammaAtIndex(i, state[i+this->getDOF()]);
+        }
     }
     
     void setGammaAtIndex(int index, float value) {
@@ -115,9 +148,66 @@ public:
         this->__dotgamma[index] = value;
     }
     
-
+    void setSolver(ODESolver<Col<float> >* solver) {
+        this->__solver = solver;
+    }
+    
+    void setStepSize(float size) {
+        this->__stepSize = size;
+    }
+    
+    
+    /* Below are all of the public member functions for the Robot class */
+    
+    virtual Col<float> getJointAccelerations() {
+        return solve(this->getSystemMassMatrix(), -this->getVectorOfCorCent(),
+                     solve_opts::fast);
+    }
+    
+    virtual Col<float> getJointAccelerations(Col<float> gamma, Col<float> dotgamma) {
+        this->setGamma(gamma);
+        this->setDotGamma(dotgamma);
+        this->update();
+        return this->getJointAccelerations();
+    }
+    
+    virtual Col<float> getJointAccelerations(Col<float> vec) {
+        assert(vec.size() % 2 == 0);
+        int i;
+        Col<float> gamma = Col<float>(vec.size()/2);
+        Col<float> dotgamma = Col<float>(vec.size()/2);;
+        for (i = 0; 2*i < vec.size(); i++) {
+            gamma[i] = vec[i];
+            dotgamma[i] = vec[i + vec.size()/2];
+        }
+        return this->getJointAccelerations(gamma, dotgamma);
+    }
+    
+    virtual Col<float> getJointAccelerationsFromState(Col<float> vec) {
+        return this->getJointAccelerations(vec);
+    }
+    
+    virtual Col<float> getStateDerivative(Col<float> vec) {
+        Col<float> dotgamma = Col<float>(vec.size()/2, 1, fill::zeros);
+        int i;
+        for (i = 0; i < vec.size()/2; i++) {
+            dotgamma[i] = vec[i + vec.size()/2];
+        }
+        return join_vert(dotgamma, this->getJointAccelerations(vec));
+    }
+    
+    virtual void step() {
+        Col<float> currentState = this->getGammaState();
+        float stepSize = this->getStepSize();
+        Col<float> k1 = this->getStateDerivative(currentState);
+        Col<float> k2 = this->getStateDerivative(currentState + (k1 * stepSize / 2));
+        Col<float> k3 = this->getStateDerivative(currentState + (k2 * stepSize / 2));
+        Col<float> k4 = this->getStateDerivative(currentState + (k3 * stepSize));
+        this->setGammaState(currentState + (stepSize * ((k1 / 6) + (k2 / 3) + (k3 / 3) + (k4 / 6))));
+    }
 };
 
-}
 
+
+}
 #endif /* Robot_hpp */

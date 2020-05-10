@@ -10,6 +10,3 @@
 
 using namespace ORCA;
 
-RootLink::RootLink() {
-    this->initialize();
-}

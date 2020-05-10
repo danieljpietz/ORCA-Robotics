@@ -97,8 +97,10 @@ void Link::__update() {
     Col<float> botDotGamma = this->getRobot()->getDotGamma();
     
     Col<float> velocity_prev = this->getPreviousLink()->getJacobian() *  botDotGamma;
-    Col<float> w_prev = {{velocity_prev[0]}, {velocity_prev[1]}, {velocity_prev[2]}};
-    Col<float> dotr_prev = {{velocity_prev[3]}, {velocity_prev[4]}, {velocity_prev[5]}};
+    Col<float> w_prev;
+    w_prev << velocity_prev[0] << endr << velocity_prev[1] << endr << velocity_prev[2];
+    Col<float> dotr_prev;
+    dotr_prev << velocity_prev[3] << endr << velocity_prev[4] << endr << velocity_prev[5];
     Mat<float> T_prev = this->getPreviousLink()->getRotationMatrixGlobal();
     Mat<float> J_prev = this->getPreviousLink()->getJacobian();
     Mat<float> dotJ_prev = this->getPreviousLink()->getDotJacobian();
@@ -111,16 +113,14 @@ void Link::__update() {
     Mat<float> tempMatrix2 = join_horiz(-T_prev * skew(r_local), Mat<float>(3, 3, fill::eye));
     Mat<float> J = join_vert(tempMatrix1, tempMatrix2)*J_prev + join_vert(this->getIHatBot(), T_prev*this->getITildeBot());
     Col<float> velocity_current = J*botDotGamma;
-    Col<float> w_current = {{velocity_current[0]}, {velocity_current[1]}, {velocity_current[2]}};
-    Col<float> dotr_current = {{velocity_current[3]}, {velocity_current[4]}, {velocity_current[5]}};
-    
+    Col<float> w_current;
+    w_current << velocity_current[0] << endr << velocity_current[1] << endr << velocity_current[2];
+    Col<float> dotr_current;
+    dotr_current << velocity_current[3] << endr << velocity_current[4] << endr << velocity_current[5];
     Mat<float> tempMatrix3 = join_horiz(-skew(w_local)*this->getRotationMatrixLocal().t(), Mat<float>(3, 3, fill::zeros));
     Mat<float> tempMatrix4 = join_horiz(-T_prev*(skew(w_prev)*skew(r_local)+skew(dotr_local)), Mat<float>(3, 3, fill::zeros));
     Mat<float> tempMatrix5 = join_horiz(this->getRotationMatrixLocal().t(), Mat<float>(3, 3, fill::zeros));
     Mat<float> tempMatrix6 = join_horiz(-T_prev*skew(r_local), Mat<float>(3, 3, fill::eye));
-    
-    std::cout << "HERE" << std::endl;
-    std::cout << tempMatrix6 << std::endl;
     
     Mat<float> dotJCurrent = join_vert(tempMatrix3, tempMatrix4)*J_prev + join_vert(tempMatrix5,tempMatrix6)*dotJ_prev + join_vert(Mat<float>(3,this->getRobot()->getDOF(), fill::zeros), T_prev*skew(w_prev)*this->getITildeBot());
     
@@ -156,7 +156,7 @@ void Link::updateGamma() {
 void Link::updateLocalMassMatrix() {
     //[J11,skew(GAMMA11)*T1.';T1*skew(GAMMA11).',m1*eye(3)]
     Mat<float> temp1 = join_horiz(this->getInertiaMatrix(), skew(this->getFirstMassMoment()) * this->getRotationMatrixGlobal().t());
-    std::cout << skew(this->getFirstMassMoment()) << std::endl;
+    
     Mat<float> temp2 = join_horiz(this->getRotationMatrixGlobal() * skew(this->getFirstMassMoment()).t(), this->getMass() * Mat<float>(3,3, fill::eye));
     this->setLocalMassMatrix(join_vert(temp1, temp2));
 }
@@ -174,7 +174,5 @@ void Link::updateVectorOfCorCent() {
     Mat<float> J = this->getJacobian();
     Mat<float> JJ = this->getInertiaMatrix();
     Col<float> GAMMA = this->getFirstMassMoment();
-    std::cout << dotgamma << std::endl;
-    std::cout << this->getDotJacobian() << std::endl;
     this->setVectorOfCorCent(J.t()*(this->getLocalMassMatrix()*this->getDotJacobian()*dotgamma + join_vert(cross(omega,JJ*omega), T*cross(omega,cross(omega,GAMMA)))));
 }

@@ -305,7 +305,6 @@ public:
         this->updateVectorOfCorCent();
     }
     virtual void update() override;         // Called everytime the robot is updated. Must be overloaded by user
-    virtual void initialize();              // Called when the root link is initialized. Must be overloaded by user
     virtual void setJacobianAtIndex(int row, int col, float val) {
         this->setJacobian(setValueAtIndex(this->getJacobian(), row, col, val));
     }
@@ -327,7 +326,6 @@ protected:
 public:
     RLink(axis rotationAxis);
     RLink(std::vector<axis> rotationAxes);
-    
     
     virtual void update() override;
     
