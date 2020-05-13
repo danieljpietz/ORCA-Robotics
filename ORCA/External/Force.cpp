@@ -13,15 +13,25 @@ using namespace arma;
 using namespace ORCA;
 
 Force::Force() {
+    this->setPosition(Col<float>(3, fill::zeros));
+    this->setWorldValue(Col<float>(3,fill::zeros));
+    this->setCoordinateFrame(Local);
+}
+
+void Force::getValue(Link* link) {
+    Col<float> localPosition;
+    if(__positionFrame == Local) {
+        localPosition = this->getPosition(link);
+    }
+    else {
+        localPosition = this->getPosition(link) - link->getOffsetGlobal();
+    }
+    
+    Col<float> torque = skew(localPosition) * (link->getRotationMatrixGlobal().t())*this->getWorldValue(link);
+    
+    
+    link->getRobot()->addToForceVector(-link->getJacobian().t() * join_vert(torque, this->getWorldValue(link)));
     
 }
 
-Col<float> Force::getValue(Link* link) {
-    if(__positionFrame == Local) {
-        return skew(__position) * (link->getRotationMatrixLocal().t())*this->getWorldValue(link);
-    }
-    else {
-        return skew(__position - link->getOffsetGlobal()) * (link->getRotationMatrixLocal().t())*this->getWorldValue(link);
-    }
-}
 

@@ -30,13 +30,13 @@ class RootLink;
 class JointForce {
 protected:
 public:
-    virtual Col<float> getValue(Link* link) {
-        return {0};
+    virtual void getValue(Link* link) {
+        
     };
     
 };
 
-class Force : JointForce {
+class Force : public JointForce {
 protected:
     CoordinateType __positionFrame;
     Col<float> __position;
@@ -45,11 +45,15 @@ protected:
 public:
     Force();
     
-    Col<float> getPosition() {
+    virtual Col<float> getPosition() {
         return this->__position;
     }
     
-    Col<float> getWorldValue() {
+    virtual Col<float> getPosition(Link* link) {
+        return this->__position;
+    }
+    
+    virtual Col<float> getWorldValue() {
         return this->__worldValue;
     }
     
@@ -59,7 +63,7 @@ public:
     
     /* Below are the public setters for the Force class */
     
-    void setPosition(Col<float> vec) {
+    virtual void setPosition(Col<float> vec) {
         this->__position = vec;
     }
     
@@ -67,7 +71,7 @@ public:
         this->__positionFrame = frame;
     }
     
-    void setWorldValue(Col<float> vec) {
+    virtual void setWorldValue(Col<float> vec) {
         this->__worldValue = vec;
     }
     
@@ -75,7 +79,18 @@ public:
         return __worldValue;
     }
     
-    virtual Col<float> getValue(Link* link);
+    virtual void getValue(Link* link);
+};
+
+class Gravity : public Force {
+    Gravity();
+public:
+    Gravity(Col<float> direction) {
+        this->__worldValue = direction;
+    }
+    virtual Col<float> getPosition(Link* link) override;
+    virtual Col<float> getWorldValue(Link* link) override;
+    
 };
 
 class Friction : public JointForce {
@@ -96,13 +111,13 @@ public:
 class CoulombicFriction : public Friction {    
 public:
     CoulombicFriction() {}
-    Col<float> getValue(Link* link) override ;
+    void getValue(Link* link) override;
 };
 
 class ViscousFriction : public Friction {
 public:
     ViscousFriction() {}
-    Col<float> getValue(Link* link) override ;
+    void getValue(Link* link) override;
 };
 
 }

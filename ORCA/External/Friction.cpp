@@ -15,11 +15,24 @@ Friction::Friction() {
     this->setCoefficient(0);
 }
 
-Col<float> CoulombicFriction::getValue(Link* link) {
-    return -this->getCoefficient()*sign(link->getDotGamma());
+void CoulombicFriction::getValue(Link* link) {
+    
+    int i;
+    Col<float> friction = -this->getCoefficient()*sign(link->getDotGamma());
+    Col<float> val = Col<float>(link->getRobot()->getDOF(), fill::zeros);
+    for (i = 0; i < link->getDOF(); i++) {
+        val[link->getGammaIndex()[i]] = friction[i];
+    }
+    link->getRobot()->addToForceVector(val);
 }
 
-Col<float> ViscousFriction::getValue(Link* link) {
-    return -this->getCoefficient()*(link->getDotGamma());
+void ViscousFriction::getValue(Link* link) {
+    int i;
+       Col<float> friction = -this->getCoefficient()*(link->getDotGamma());
+       Col<float> val = Col<float>(link->getRobot()->getDOF(), fill::zeros);
+       for (i = 0; i < link->getDOF(); i++) {
+           val[link->getGammaIndex()[i]] = friction[i];
+       }
+       link->getRobot()->addToForceVector(val);
 }
 
