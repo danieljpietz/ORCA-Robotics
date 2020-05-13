@@ -182,9 +182,12 @@ void Link::updateVectorOfCorCent() {
 }
 
 void Link::updateForceVector() {
+#if 0
     int i;
     this->__forces = Col<float>(this->getDOF(), fill::zeros);
     for(i = 0; i < this->getJointForces().size(); i++) {
         this->__forces += this->getJointForces()[i]->getValue(this);
+        
     }
+#endif
 }

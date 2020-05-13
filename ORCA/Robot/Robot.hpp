@@ -211,6 +211,10 @@ public:
         this->setGammaState(currentState + (stepSize * ((k1 / 6) + (k2 / 3) + (k3 / 3) + (k4 / 6))));
     }
     
+    virtual void addToForceVector(Col<float> vec) {
+        this->__forceVector += vec;
+    }
+    
     virtual void updateForces();
     
     virtual void __getBranchForcesRecursive(Link* link);

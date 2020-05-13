@@ -282,8 +282,8 @@ public:
         return this->__vecOfCorCent;
     }
     
-    Col<float> getForces() {
-        return this->__forces;
+    std::vector<JointForce*> getForces() {
+        return this->__forceObjs;
     }
     
     std::vector<int> getGammaIndex() {

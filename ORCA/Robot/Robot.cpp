@@ -116,8 +116,13 @@ void Robot::updateForces() {
 
 void Robot::__getBranchForcesRecursive(Link* link) {
     int i,j;
-    for (i = 0; i < link->getDOF(); i++) {
-        this->__forceVector[link->getGammaIndex()[i]] = link->getForces()[i];
+   /* for (i = 0; i < link->getDOF(); i++) {
+        //this->__forceVector[link->getGammaIndex()[i]] = link->getForces()[i];
+        link->getForces()[i];
+    }*/
+    //TODO: Change JointForces and Forces functions
+    for (i = 0; i < link->getJointForces().size(); i++) {
+        link->getJointForces()[i]->getValue(link);
     }
     
     for (j = 0; j < link->getNextLinks().size(); j++) {
