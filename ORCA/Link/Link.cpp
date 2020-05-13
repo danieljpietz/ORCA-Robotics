@@ -28,12 +28,14 @@ Link::Link() {
     this->setIHatBot(Mat<float>(3,1, fill::zeros));
     this->setGamma(Col<float>(1,fill::zeros));
     this->setDotGamma(Col<float>(1,fill::zeros));
+    this->setForces(Col<float>(1,fill::zeros));
     this->setJacobian(Mat<float>(6,1,fill::zeros));
     this->setDotJacobian(Mat<float>(6,1,fill::zeros));
     this->setOmegaLocal(Col<float>(3,fill::zeros));
     this->setOmegaGlobal(Col<float>(3,fill::zeros));
     this->setDotRLocal(Col<float>(3,fill::zeros));
     this->setDotRGlobal(Col<float>(3,fill::zeros));
+    this->setOffsetGlobal(Col<float>(3,fill::zeros));
 }
 
 /**
@@ -133,6 +135,8 @@ void Link::__update() {
     this->updateLocalMassMatrix();
     this->updateSystemMassMatrix();
     this->updateVectorOfCorCent();
+    this->updateForceVector();
+    this->setOffsetGlobal(this->getPreviousLink()->getOffsetGlobal() + this->getPreviousLink()->getRotationMatrixGlobal() * this->getOffsetLocal());
 }
 
 
@@ -175,4 +179,12 @@ void Link::updateVectorOfCorCent() {
     Mat<float> JJ = this->getInertiaMatrix();
     Col<float> GAMMA = this->getFirstMassMoment();
     this->setVectorOfCorCent(J.t()*(this->getLocalMassMatrix()*this->getDotJacobian()*dotgamma + join_vert(cross(omega,JJ*omega), T*cross(omega,cross(omega,GAMMA)))));
+}
+
+void Link::updateForceVector() {
+    int i;
+    this->__forces = Col<float>(this->getDOF(), fill::zeros);
+    for(i = 0; i < this->getJointForces().size(); i++) {
+        this->__forces += this->getJointForces()[i]->getValue(this);
+    }
 }

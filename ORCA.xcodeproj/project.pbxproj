@@ -18,12 +18,9 @@
 		E43D7B8C24649CEC001569B7 /* RLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B8A24649CEC001569B7 /* RLink.cpp */; };
 		E43D7B912464ACF5001569B7 /* Robot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B8F2464ACF5001569B7 /* Robot.cpp */; };
 		E43D7B922464ACF5001569B7 /* Robot.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B902464ACF5001569B7 /* Robot.hpp */; };
-		E43D7B942464B246001569B7 /* RootLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B932464B246001569B7 /* RootLink.cpp */; };
 		E43D7B97246681A6001569B7 /* External.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B96246681A6001569B7 /* External.hpp */; };
 		E43D7B99246681B4001569B7 /* Force.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B98246681B4001569B7 /* Force.cpp */; };
-		E43D7B9B246681C3001569B7 /* Torque.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B9A246681C3001569B7 /* Torque.cpp */; };
-		E43D7B9F24671915001569B7 /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B9D24671915001569B7 /* Simulator.cpp */; };
-		E43D7BA024671915001569B7 /* Simulator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E43D7B9E24671915001569B7 /* Simulator.hpp */; };
+		E43D7B9B246681C3001569B7 /* Friction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E43D7B9A246681C3001569B7 /* Friction.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,12 +36,9 @@
 		E43D7B8A24649CEC001569B7 /* RLink.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RLink.cpp; sourceTree = "<group>"; };
 		E43D7B8F2464ACF5001569B7 /* Robot.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Robot.cpp; sourceTree = "<group>"; };
 		E43D7B902464ACF5001569B7 /* Robot.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Robot.hpp; sourceTree = "<group>"; };
-		E43D7B932464B246001569B7 /* RootLink.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RootLink.cpp; sourceTree = "<group>"; };
 		E43D7B96246681A6001569B7 /* External.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = External.hpp; sourceTree = "<group>"; };
 		E43D7B98246681B4001569B7 /* Force.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Force.cpp; sourceTree = "<group>"; };
-		E43D7B9A246681C3001569B7 /* Torque.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Torque.cpp; sourceTree = "<group>"; };
-		E43D7B9D24671915001569B7 /* Simulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Simulator.cpp; sourceTree = "<group>"; };
-		E43D7B9E24671915001569B7 /* Simulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Simulator.hpp; sourceTree = "<group>"; };
+		E43D7B9A246681C3001569B7 /* Friction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Friction.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +71,6 @@
 		E43D7B4C2463AF9F001569B7 /* ORCA */ = {
 			isa = PBXGroup;
 			children = (
-				E43D7B9C246718FF001569B7 /* Simulator */,
 				E43D7B9524668169001569B7 /* External */,
 				E43D7B5A2463B593001569B7 /* ORCAMath */,
 				E43D7B592463B3A4001569B7 /* Robot */,
@@ -95,7 +88,6 @@
 				E43D7B7A2463BE7A001569B7 /* Link.cpp */,
 				E43D7B7B2463BE7A001569B7 /* Link.hpp */,
 				E43D7B8A24649CEC001569B7 /* RLink.cpp */,
-				E43D7B932464B246001569B7 /* RootLink.cpp */,
 			);
 			path = Link;
 			sourceTree = "<group>";
@@ -124,18 +116,9 @@
 			children = (
 				E43D7B96246681A6001569B7 /* External.hpp */,
 				E43D7B98246681B4001569B7 /* Force.cpp */,
-				E43D7B9A246681C3001569B7 /* Torque.cpp */,
+				E43D7B9A246681C3001569B7 /* Friction.cpp */,
 			);
 			path = External;
-			sourceTree = "<group>";
-		};
-		E43D7B9C246718FF001569B7 /* Simulator */ = {
-			isa = PBXGroup;
-			children = (
-				E43D7B9D24671915001569B7 /* Simulator.cpp */,
-				E43D7B9E24671915001569B7 /* Simulator.hpp */,
-			);
-			path = Simulator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,7 +131,6 @@
 				E43D7B97246681A6001569B7 /* External.hpp in Headers */,
 				E43D7B602463B654001569B7 /* ORCASolvers.hpp in Headers */,
 				E43D7B922464ACF5001569B7 /* Robot.hpp in Headers */,
-				E43D7BA024671915001569B7 /* Simulator.hpp in Headers */,
 				E43D7B502463AF9F001569B7 /* ORCAPriv.hpp in Headers */,
 				E43D7B4E2463AF9F001569B7 /* ORCA in Headers */,
 				E43D7B5F2463B654001569B7 /* ORCAMath.hpp in Headers */,
@@ -216,12 +198,10 @@
 				E43D7B912464ACF5001569B7 /* Robot.cpp in Sources */,
 				E43D7B7C2463BE7A001569B7 /* Link.cpp in Sources */,
 				E43D7B5E2463B654001569B7 /* ORCAMath.cpp in Sources */,
-				E43D7B9B246681C3001569B7 /* Torque.cpp in Sources */,
-				E43D7B942464B246001569B7 /* RootLink.cpp in Sources */,
+				E43D7B9B246681C3001569B7 /* Friction.cpp in Sources */,
 				E43D7B8C24649CEC001569B7 /* RLink.cpp in Sources */,
 				E43D7B522463AF9F001569B7 /* ORCA.cpp in Sources */,
 				E43D7B99246681B4001569B7 /* Force.cpp in Sources */,
-				E43D7B9F24671915001569B7 /* Simulator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

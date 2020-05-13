@@ -8,43 +8,20 @@
 
 #include "../ORCA"
 
-class Link;
-class Robot;
 
 using namespace arma;
+using namespace ORCA;
 
-namespace ORCA {
-class Force {
-protected:
-    Col<float> __value;
-    std::vector<Link*> __links;
-public:
+Force::Force() {
     
-    /* Below are the public getters for the Force class */
-    
-    std::vector<Link*> getLinks() {
-        return this->__links;
-    }
-    
-    Col<float> getValue() {
-        return __value;
-    }
-    
-    /* Below are the public setters for the Force class */
-    
-    void setLinks(std::vector<Link*> links) {
-        this->__links = links;
-    }
-    
-    void addLink(Link* link) {
-        this->__links.push_back(link);
-    }
-    
-    void setValue(Col<float> value) {
-        this->__value = value;
-    }
-};
-
 }
 
+Col<float> Force::getValue(Link* link) {
+    if(__positionFrame == Local) {
+        return skew(__position) * (link->getRotationMatrixLocal().t())*this->getWorldValue(link);
+    }
+    else {
+        return skew(__position - link->getOffsetGlobal()) * (link->getRotationMatrixLocal().t())*this->getWorldValue(link);
+    }
+}
 

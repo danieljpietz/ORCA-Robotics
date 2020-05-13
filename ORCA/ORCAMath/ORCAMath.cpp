@@ -12,7 +12,7 @@ using namespace arma;
 
 
 Mat<float> ORCA::rotx(float theta) {
-
+    
     Mat<float> returnMat(3,3);
     float ct = cos(theta);
     float st = sin(theta);
@@ -23,7 +23,7 @@ Mat<float> ORCA::rotx(float theta) {
 }
 
 Mat<float> ORCA::roty(float theta) {
-
+    
     Mat<float> returnMat(3,3);
     float ct = cos(theta);
     float st = sin(theta);
@@ -34,7 +34,7 @@ Mat<float> ORCA::roty(float theta) {
 }
 
 Mat<float> ORCA::rotz(float theta) {
-
+    
     Mat<float> returnMat(3,3);
     float ct = cos(theta);
     float st = sin(theta);
@@ -45,14 +45,14 @@ Mat<float> ORCA::rotz(float theta) {
 }
 
 Mat<float> ORCA::skew(Col<float> vec) {
-
+    
     Mat<float> returnMat(3,3);
     returnMat << 0 << -vec[2] << vec[1] << endr <<  vec[2] << 0 << -vec[0] << endr << -vec[1] << vec[0] << 0;
     return returnMat;
 }
 
 Mat<float> ORCA::rotq(Col<float> q) {
-
+    
     float t2 = q[0]*q[0];
     float t3 = q[1]*q[1];
     float t4 = q[2]*q[2];
@@ -63,11 +63,11 @@ Mat<float> ORCA::rotq(Col<float> q) {
     float t9 = q[1]*q[2]*2.0;
     float t10 = q[1]*q[3]*2.0;
     float t11 = q[2]*q[3]*2.0;
-
+    
     Mat<float> returnMat(3,3);
-
+    
     returnMat << t2+t3-t4-t5 << -t8+t9 << t7+t10 << endr << t8+t9 << t2+t4-t3-t5 << -t6+t11 << endr << -t7+t10 << t6+t11 << t2+t5-t3-t4;
-
+    
     return returnMat;
 }
 

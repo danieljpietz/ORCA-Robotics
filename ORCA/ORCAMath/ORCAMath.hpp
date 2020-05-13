@@ -30,8 +30,6 @@ Mat<float> rotq(Col<float> q);
 Mat<float> skew(Col<float> vec);
 Col<float> quaternionProduct(Col<float> q1, Col<float> q2);
 
-}
-
 template <class T>
 Mat<T> setValueAtIndex(Mat<T> mat, int row, int col, T val) {
     assert(row < mat.n_rows);
@@ -39,5 +37,8 @@ Mat<T> setValueAtIndex(Mat<T> mat, int row, int col, T val) {
     mat[col*mat.n_rows + row] = val;
     return mat;
 }
+}
+
+
 
 #endif /* ORCAMath_hpp */

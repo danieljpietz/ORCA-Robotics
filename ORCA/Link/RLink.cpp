@@ -29,6 +29,9 @@ RLink::RLink(std::vector<axis> rotationAxes) {
         this->setIHat(setValueAtIndex(this->getIHat(), (int)rotationAxes[i], i, static_cast<float>(1)));
     }
     this->setIHatBot(this->getIHat());
+    this->setGamma(Col<float>(this->getDOF(),fill::zeros));
+    this->setDotGamma(Col<float>(this->getDOF(),fill::zeros));
+    this->setForces(Col<float>(this->getDOF(),fill::zeros));
 }
 
 void RLink::updateRotationMatrixLocal() {

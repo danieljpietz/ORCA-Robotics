@@ -52,6 +52,7 @@ protected:
     Col<float> __dotgamma;                                  // All joint velocities for the robot
     Mat<float> __SystemMassMatrix;                          // System Mass Matrix for the robot
     Col<float> __vecOfCorCent;                              // Vector for Coriolis and Centreptial terms for the robot
+    Col<float> __forceVector;                               // Vector of external forces acting on the system
     
     /* Below are the protected setters of the Robot class */
     
@@ -121,6 +122,10 @@ public:
         return this->__stepSize;
     }
     
+    Col<float> getForces() {
+        return this->__forceVector;
+    }
+    
     /* Below are all of the public setters for the Robot class */
     
     void setGamma(Col<float> gamma) {
@@ -160,7 +165,7 @@ public:
     /* Below are all of the public member functions for the Robot class */
     
     virtual Col<float> getJointAccelerations() {
-        return solve(this->getSystemMassMatrix(), -this->getVectorOfCorCent(),
+        return solve(this->getSystemMassMatrix(), this->getForces() - this->getVectorOfCorCent(),
                      solve_opts::fast);
     }
     
@@ -205,6 +210,11 @@ public:
         Col<float> k4 = this->getStateDerivative(currentState + (k3 * stepSize));
         this->setGammaState(currentState + (stepSize * ((k1 / 6) + (k2 / 3) + (k3 / 3) + (k4 / 6))));
     }
+    
+    virtual void updateForces();
+    
+    virtual void __getBranchForcesRecursive(Link* link);
+    
 };
 
 

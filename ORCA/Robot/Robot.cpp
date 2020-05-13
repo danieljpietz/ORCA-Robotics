@@ -93,6 +93,7 @@ void Robot::addLink(Link* newLink, Link* parentLink) {
     newLink->setRobot(this);
     this->__gamma.resize(this->getDOF());
     this->__dotgamma.resize(this->getDOF());
+    this->__forceVector.resize(this->getDOF());
     int i;
     for (i = this->getDOF(); i > this->getDOF() - newLink->getDOF(); i--) {
         this->setGammaAtIndex(i, 0);
@@ -104,5 +105,23 @@ void Robot::update() {
     this->getRootLink()->__updateBranch();
     this->updateSystemMassMatrix();
     this->updateVectorOfCorCent();
+    this->updateForces();
+}
+
+
+
+void Robot::updateForces() {
+    this->__getBranchForcesRecursive(this->getRootLink());
+}
+
+void Robot::__getBranchForcesRecursive(Link* link) {
+    int i,j;
+    for (i = 0; i < link->getDOF(); i++) {
+        this->__forceVector[link->getGammaIndex()[i]] = link->getForces()[i];
+    }
+    
+    for (j = 0; j < link->getNextLinks().size(); j++) {
+        this->__getBranchForcesRecursive(link->getNextLinks()[j]);
+    }
     
 }

@@ -18,6 +18,7 @@ using namespace arma;
 namespace ORCA {
 
 class Robot;
+class JointForce;
 
 class Link {
     friend class Robot;
@@ -39,6 +40,7 @@ protected:
     Mat<float> __ITildeBot;                 // Matrix that maps the robot joint velocities into the links local angular velocity
     Mat<float> __IHatBot;                   // Matrix that maps the robot joint velocities into the links local linear velocity
     int __DOF;                              // Degrees of freedom the link has
+    std::vector<JointForce*> __forceObjs;   // Vector of force objects acting on the link
     
     /* Below are runtime constants for a robotic link     */
     /* These should be nulled and zeroed on initalization */
@@ -56,13 +58,15 @@ protected:
     Mat<float> __dotjacobian;               // The time-derivative of the jacobian matrix
     Col<float> __omegaLocal;                // The angular velocty of the link in the joint space
     Col<float> __omega;                     // The angular velocty of the link in the world space
+    Col<float> __offsetGlobal;              // The position of the link in the world space
     Col<float> __dotrLocal;                 // The linear velocity of the link in the joint space
     Col<float> __dotr;                      // The linear velocity of the link in the world space
     Mat<float> __rotationMatrixLocal;       // The rotation of the of the link in the space of the previous link
     Mat<float> __rotationMatrixGlobal;      // The rotation of the of the link in the world space
-    Mat<float> __localMassMatrix;         // The local mass matrix for the link
-    Mat<float> __systemMassMatrix;        // System Mass Matrix for the link
-    Col<float> __vecOfCorCent;            // Vector for Coriolis and Centreptial terms for the link
+    Mat<float> __localMassMatrix;           // The local mass matrix for the link
+    Mat<float> __systemMassMatrix;          // System Mass Matrix for the link
+    Col<float> __vecOfCorCent;              // Vector for Coriolis and Centreptial terms for the link
+    Col<float> __forces;                    // External forces acting on link
     
     /* Below are the protected setters for the Link class */
     
@@ -106,6 +110,10 @@ protected:
         this->__omega = vec;
     }
     
+    void setOffsetGlobal(Col<float> vec) {
+        this->__offsetGlobal = vec;
+    }
+    
     void setDotRLocal(Col<float> vec) {
         this->__dotrLocal = vec;
     }
@@ -138,6 +146,10 @@ protected:
         this->__vecOfCorCent = vec;
     }
     
+    void setForces(Col<float> vec) {
+        this->__forces = vec;
+    }
+    
     /* Below are protected functions for the Link class */
     
     virtual void updateDOFDimensions(int n);    // Update all matrix dimensions that depend on the DOF of the robot
@@ -151,6 +163,7 @@ protected:
     virtual void updateLocalMassMatrix();       // Updates the local mass matrix for the link
     virtual void updateSystemMassMatrix();      // Updates the system mass matrix for the link
     virtual void updateVectorOfCorCent();       // Updates the vector of coriolis and centripital terms for the robot
+    virtual void updateForceVector();           // Updates the forces acting on the link
         
     Link();
     
@@ -229,6 +242,14 @@ public:
         return this->__omega;
     }
     
+    Col<float> getOffsetLocal() {
+        return this->__localOffset;
+    }
+    
+    Col<float> getOffsetGlobal() {
+        return this->__offsetGlobal;
+    }
+    
     Col<float> getDotRLocal() {
         return this->__dotrLocal;
     }
@@ -261,6 +282,18 @@ public:
         return this->__vecOfCorCent;
     }
     
+    Col<float> getForces() {
+        return this->__forces;
+    }
+    
+    std::vector<int> getGammaIndex() {
+        return this->__gammaIndex;
+    }
+    
+    std::vector<JointForce*> getJointForces() {
+        return this->__forceObjs;
+    }
+    
     /* Below are the setters for the public members of the link class */
     
     void setMass(float mass) {
@@ -285,6 +318,12 @@ public:
     
     void setLocalOffset(Col<float> offset) {
         this->__localOffset = offset;
+    }
+    
+    /* Below are Public Member Functions for the Link class */
+    
+    void addForce(JointForce* force) {
+        this->__forceObjs.push_back(force);
     }
     
 };

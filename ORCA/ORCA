@@ -17,7 +17,7 @@ typedef enum {X,Y,Z} axis;
 #include "Link/Link.hpp"
 #include "Robot/Robot.hpp"
 #include "ORCAMath/ORCAMath.hpp"
-#include "Simulator/Simulator.hpp"
+#include "External/External.hpp"
 
 #pragma GCC visibility pop
 #endif
